@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+.settingsModal::after {
+  transition: all .3s;
+}
+
+.settingsModal:hover::after {
+  content: 'Settings';
+  transform: translateX(10px);
+  transition: all .3s;
+}
+
+.todoItem {
+  height: 8vh;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-size: 2.5vh;
+}
