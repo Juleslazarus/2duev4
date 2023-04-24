@@ -59,11 +59,15 @@ const Todo = () => {
       let uid = cred.uid
       let todoInput = document.querySelector('.todoInput'); 
       let todoInputText = todoInput.value; 
-      set(ref(db, `${uid}/todos/${todoInputText}`), {
-        todoText: todoInputText, 
-        created_At: Date()
-      })
-      todoInput.value = ''; 
+      if (todoInputText === '') {
+        alert('You must use the input field to write a todo!')
+      } else {
+        set(ref(db, `${uid}/todos/${todoInputText}`), {
+          todoText: todoInputText, 
+          created_At: Date()
+        })
+        todoInput.value = ''; 
+      }
     })
   }
 
