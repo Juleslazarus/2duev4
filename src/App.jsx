@@ -9,8 +9,12 @@ import './sass/main.css'
 
 const App = () => {
   let [userAuth, setUserAuth] = useState(false); 
+  
+
   auth.onAuthStateChanged(cred => {
     if (cred) {
+      let uid = cred.uid; 
+      // let user_uid = localStorage.setItem('user_uid', JSON.stringify(`${uid}`))
       setUserAuth(true); 
     }
   })

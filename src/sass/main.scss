@@ -7,18 +7,6 @@
     font-family: 'Roboto', sans-serif;
 }
 
-.settingsModal {
-    &::after {
-        transition: all .3s; 
-    }
-    &:hover {
-        &::after {
-            content: 'Settings'; 
-            transform: translateX(10px); 
-            transition: all .3s; 
-        }
-    }
-}
 
 .todoItem {
     height: 8vh;
@@ -27,5 +15,14 @@
     color: white; 
     font-weight: bold; 
     font-size: 2.5vh;
-    
+    word-wrap:break-word; 
+    min-width: 100%; 
+    max-width: 100%; 
+    overflow-y: scroll; 
+}
+
+.todoInput {
+    &:active {
+        outline: blue;
+    }
 }

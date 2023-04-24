@@ -7,6 +7,13 @@ const Landing = () => {
     let [reg, setReg] = useState(false); 
     let [log, setLog] = useState(false); 
 
+    let handleRegComp = () => {
+        setReg(reg => !reg)
+    }
+    let handleLogComp = () => {
+        setLog(log => !log)
+    }
+
   return (
     <div className='landingComp h-[100vh] w-full bg-gray-900 flex flex-col gap-8 justify-center items-center'>
         <motion.h1 initial={{y: -20, opacity: 0, scale: .9}} animate={{y: 0, opacity: 1, scale: 1 }} transition={{type: 'tween', duration: 1}} className='text-white text-3xl font-bold text-center'>Welcome To 2Due v4</motion.h1>
@@ -19,10 +26,10 @@ const Landing = () => {
             </motion.div>
         </div>
         {
-            reg ? <Register/> : null
+            reg ? <Register handleRegComp={handleRegComp} handleLogComp={handleLogComp} /> : null
         }
         {
-            log ? <Login/> : null
+            log ? <Login handleLogComp={handleLogComp} handleRegComp={handleRegComp}/> : null
         }
     </div>
   )
