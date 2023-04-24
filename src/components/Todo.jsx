@@ -44,7 +44,6 @@ const Todo = () => {
           todoCont.appendChild(todoItem); 
           todoItem.append(timeStamp)
           todoItem.addEventListener('click', (e) => {
-            console.log(e.target.firstChild.textContent); 
             setTodoMenu(todoMenu => !todoMenu)
             let selectedTodo = e.target.firstChild.textContent; 
             let lsTodo = localStorage.setItem('selected_todo', `${selectedTodo}`)
