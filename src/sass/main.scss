@@ -11,9 +11,9 @@
 .todoItem {
     height: 8vh;
     display: flex; 
-    align-items: center;
+    align-items: left;
     font-weight:bolder; 
-    padding: 2vw; 
+    padding: 2px; 
     font-size: 2.5vh;
     word-wrap:break-word; 
     min-width: 90%; 
@@ -22,7 +22,8 @@
     max-height: 12vh; 
     // overflow-y: scroll; 
     animation: running ease-in-out .5s todoAni; 
-    
+    display: flex; 
+    flex-direction: column;
 }
 
 @keyframes todoAni {
