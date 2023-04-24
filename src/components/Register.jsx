@@ -6,13 +6,19 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithPopup, Go
 import '../../tailwind.css'
 
 const Register = ({handleRegComp, handleLogComp}) => {
+  // Logic: 
+  
+  // useState Section: 
   let [log, setLog] = useState(false); 
 
-  const registerUser = (e) => {
+
+  //? feature activated functions: 
+
+  //Register a user with manual inputs
+  const registerUser = (e) => { 
     let nameInput = document.querySelector('.nameInput'); 
     let emailInput = document.querySelector('.emailInput'); 
     let passInput = document.querySelector('.passInput'); 
-    // let submitBtn = document.querySelector('.submitBtn'); 
 
     let fname = nameInput.value; 
     let email = emailInput.value; 
@@ -22,7 +28,6 @@ const Register = ({handleRegComp, handleLogComp}) => {
     .then(() => {
       auth.onAuthStateChanged(cred => {
         let uid = cred.uid; 
-        // let lsUID = localStorage.setItem('user_uid', JSON.stringify(uid))
         set(ref(db, `users/${uid}/`), {
           name: fname, 
           email: email, 
@@ -35,19 +40,24 @@ const Register = ({handleRegComp, handleLogComp}) => {
       })
     })
   }
-    let authGoogle = () => {
-      signInWithPopup(auth, GoogleAuth)
-      .then(result => {
-        auth.onAuthStateChanged(cred => {
-          let uid = cred.uid; 
-          // let user_uid = localStorage.setItem('user_uid', JSON.stringify(`${uid}`))
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          set(ref(db, `${uid}/`), {
-            uid: `${uid}`
-          })
+
+
+  //? Handle auth with google: 
+
+  let authGoogle = () => {
+    signInWithPopup(auth, GoogleAuth)
+    .then(result => {
+      auth.onAuthStateChanged(cred => {
+        let uid = cred.uid; 
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        set(ref(db, `${uid}/`), {
+          uid: `${uid}`
         })
       })
-    }
+    })
+  }
+  // GUI: 
+  
   return (
     <div className="registerComp h-[100vh] w-full absolute bg-gray-900 flex flex-col justify-center items-center">
       <form className="h-[80vh] flex justify-center items-center flex-col text-white gap-4">

@@ -6,8 +6,14 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithPopup, Go
 import '../../tailwind.css'
 
 const Login = ({handleLogComp, handleRegComp}) => {
+  // LOGIC: 
+  
+  //? useState Section: 
   let [log, setLog] = useState(false); 
 
+  // Functions activated by features: 
+
+  //? Log users in with their creds. 
   const LoginUser = (e) => {
     let emailInput = document.querySelector('.emailInput'); 
     let passInput = document.querySelector('.passInput'); 
@@ -17,6 +23,8 @@ const Login = ({handleLogComp, handleRegComp}) => {
 
     signInWithEmailAndPassword(auth, email, password)
   }
+
+  //? handle user sign in with google auth: 
     let authGoogle = () => {
       signInWithPopup(auth, GoogleAuth)
       .then(result => {
@@ -31,6 +39,9 @@ const Login = ({handleLogComp, handleRegComp}) => {
         })
       })
     }
+
+  // GUI: 
+  
   return (
     <div className="loginComp h-[100vh] w-full absolute bg-gray-900 flex flex-col justify-center items-center">
       <form className="h-[80vh] flex justify-center items-center flex-col text-white gap-4">

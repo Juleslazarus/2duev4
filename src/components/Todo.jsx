@@ -7,13 +7,17 @@ import TodoItem from './TodoItem';
 import '../sass/main.css'
 
 const Todo = () => {
+  //? Logic: 
+  
+  // useState Section: 
   let [menu, setMenu] = useState(false); 
   let [menuIcon, setMenuIcon] =useState(true); 
+  let [todoMenu, setTodoMenu] = useState(false); 
+  
+  // local_storage pull Section: 
   let selTodo = localStorage.getItem('selected_todo'); 
 
-  let [todoMenu, setTodoMenu] = useState(false); 
-
-  
+  //runtime Functions: 
   let pullTodos = () => {
     auth.onAuthStateChanged(cred => {
       let uid = cred.uid
@@ -46,6 +50,8 @@ const Todo = () => {
       })
     })
   }
+
+  // functions triggered by features: 
 
   let writeTodos = (e) => {
     e.preventDefault()
@@ -86,6 +92,8 @@ const Todo = () => {
     })
   }
 
+  //? input event functions: 
+
   let handleEnterKey = (e) => {
     let todoInput = document.getElementById('todoInput'); 
               if (e.keyCode === 13) {
@@ -93,7 +101,11 @@ const Todo = () => {
               }
   }
 
+  //? active runtime functions: 
   pullTodos()
+
+  //? GUI: 
+  
   return (
     <div className='mainTodoComp h-[100vh] w-full flex flex-col'>
         <div className='headerCont w-full h-[5%] bg-blue-900 flex p-2 items-center'>
@@ -113,7 +125,7 @@ const Todo = () => {
             <button id='newTodo' className='p-2 bg-blue-700 h-[100%] w-[10%] text-white' onClick={writeTodos}>New 2Due</button>
           </div>
           <div className='todoCont h-[100%] w-full flex flex-col gap-4 items-center overflow-y-scroll'>
-
+            {/* todos go into here ordered by time of creation! */}
           </div>
 
         </div>
