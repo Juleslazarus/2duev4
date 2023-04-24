@@ -12,13 +12,32 @@
     height: 8vh;
     display: flex; 
     align-items: center;
-    color: white; 
-    font-weight: bold; 
+    font-weight:bolder; 
+    padding: 2vw; 
     font-size: 2.5vh;
     word-wrap:break-word; 
-    min-width: 100%; 
-    max-width: 100%; 
-    overflow-y: scroll; 
+    min-width: 90%; 
+    max-width: 90%; 
+    min-height: 8vh; 
+    max-height: 12vh; 
+    // overflow-y: scroll; 
+    animation: running ease-in-out .5s todoAni; 
+    
+}
+
+@keyframes todoAni {
+    0% {
+        transform: translateY(-100px); 
+        opacity: 0; 
+    }
+    50% {
+        transform: translateY(-30px); 
+        opacity: .2; 
+    }
+    100% {
+        transform: translateY(0px); 
+        opacity: 1; 
+    }
 }
 
 .todoInput {
