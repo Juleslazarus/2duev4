@@ -13,6 +13,7 @@ const Todo = () => {
   let [menu, setMenu] = useState(false); 
   let [menuIcon, setMenuIcon] =useState(true); 
   let [todoMenu, setTodoMenu] = useState(false); 
+  let [sharedMenu, setSharedMenu] = useState(false); 
   
   // local_storage pull Section: 
   let selTodo = localStorage.getItem('selected_todo'); 
@@ -31,7 +32,8 @@ const Todo = () => {
           let todoItem = document.createElement('h1'); 
           todoItem.classList.add('todoItem'); 
           todoItem.classList.add('bg-blue-400')
-          todoItem.classList.add('shadow-lg')
+          todoItem.classList.add('shadow-xl')
+          todoItem.classList.add('shadow-blye-900')
           todoItem.classList.add('text-white')
           todoItem.classList.add('hover:cursor-pointer')
           todoItem.classList.add('rounded-xl')
@@ -56,6 +58,9 @@ const Todo = () => {
 
   // functions triggered by features: 
 
+  let closeSharedCol = () => { setSharedMenu(false) }
+  let openSharedCol = () => { setSharedMenu(true) }
+
   let writeTodos = (e) => {
     e.preventDefault()
     auth.onAuthStateChanged(cred => {
@@ -64,9 +69,11 @@ const Todo = () => {
       let todoInputText = todoInput.value; 
       let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      let hours = ['(AM)12', '(AM)1', '(AM)2', '(AM)3', '(AM)4', '(AM)5', '(AM)6', '(AM)7','(AM)8', '(AM)9', '(AM)10', '(AM)11', '(PM)12', '(PM)1','(PM)2', '(PM)3', '(PM)4','(PM)5', '(PM)6', '(PM)7','(PM)8', '(PM)9', '(PM)10','(PM)11' ]
+      let hours = ['12', '1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12', '1','2', '3', '4','5', '6', '7','8', '9', '10','11' ]
+      let hourCodeArr = ['am', 'am', 'am', 'am', 'am', 'am', 'am', 'am','am', 'am', 'am', 'am', 'pm', 'pm','pm', 'pm', 'pm','pm', 'pm', 'pm','pm', 'pm', 'pm','pm' ]
       const d = new Date(); 
       let hour = hours[d.getHours()]
+      let hCode = hourCodeArr[d.getHours()]
       let minutes = d.getMinutes(); 
       let day = days[d.getDay()]; 
       let month = months[d.getMonth()]
@@ -75,10 +82,66 @@ const Todo = () => {
       } else {
         set(ref(db, `${uid}/todos/${todoInputText}`), {
           todoText: todoInputText, 
-          created_At: `${hour}:${d.getMinutes()}:${d.getSeconds()}s ${day} ${month} ${d.getFullYear()}`
+          created_At: `${hour}:${d.getMinutes()}:${d.getSeconds()}${hCode} ${day} ${month} ${d.getFullYear()}`
         })
         todoInput.value = ''; 
       }
+    })
+    sendTodoAudio(); //? play the audio for sending a todo. 
+  }
+
+  //? function for playing audio when writing a todo: 
+  let sendTodoAudio = () => {
+    let todoSentAudio = new Audio('./addTodo.mp3')
+    todoSentAudio.play();
+  }
+
+  //? play remove todo sound effect: 
+  let removeTodoAudio = () => {
+    let removeTodoAudio = new Audio('./removeTodo.mp3')
+    removeTodoAudio.play(); 
+  }
+
+  //? function to create shared collection: 
+
+  let writeSharedCol = () => {
+    // e.preventDefault(); 
+    auth.onAuthStateChanged(cred => {
+      let uid = cred.uid; 
+      let sharedColLabel = document.querySelector('.sharedColLabel'); 
+      let colLabel = sharedColLabel.value; 
+      set(ref(db, `${uid}/shared_collections/${colLabel}`), {
+        colLabel: colLabel
+      }), 
+      set(ref(db, `shared_collections/${colLabel}/`), {
+        colLabel: colLabel
+      })
+       
+    })
+  }
+
+  //? function to pull sharedCollections: 
+
+  let pullSharedCols = () => {
+    auth.onAuthStateChanged(cred => {
+      let uid = cred.uid; 
+      //? grab sharedCollections that exist for each individual user: 
+      let dbRef = ref(db); 
+      get(child(dbRef, `${uid}/shared_collections/`))
+      .then(sharedItems => {
+        sharedItems.forEach(sharedNode => {
+          let colLabelText = sharedNode.val().colLabel; 
+          let sharedQuery = query(ref(db, `shared_collections/${colLabelText}`))
+          let sharedColsCont = document.querySelector('.sharedColsCont'); 
+          onValue(sharedQuery, sharedColsItem => {
+            sharedColsItem.forEach(sharedColsNode => {
+              let sharedCol = document.createElement('h1'); 
+              sharedCol.textContent = sharedColsNode.val().colLabel; 
+              sharedColsCont.appendChild(sharedCol); 
+            })
+          })
+        })
+      })
     })
   }
 
@@ -90,16 +153,18 @@ const Todo = () => {
       let updatedTodo = updateTodoText.textContent; 
       let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      let hours = ['(AM)12', '(AM)1', '(AM)2', '(AM)3', '(AM)4', '(AM)5', '(AM)6', '(AM)7','(AM)8', '(AM)9', '(AM)10', '(AM)11', '(PM)12', '(PM)1','(PM)2', '(PM)3', '(PM)4','(PM)5', '(PM)6', '(PM)7','(PM)8', '(PM)9', '(PM)10','(PM)11' ]
+      let hours = ['12', '1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12', '1','2', '3', '4','5', '6', '7','8', '9', '10','11' ]
+      let hourCodeArr = ['am', 'am', 'am', 'am', 'am', 'am', 'am', 'am','am', 'am', 'am', 'am', 'pm', 'pm','pm', 'pm', 'pm','pm', 'pm', 'pm','pm', 'pm', 'pm','pm' ]
       const d = new Date(); 
       let hour = hours[d.getHours()]
+      let hCode = hourCodeArr[d.getHours()]
       let minutes = d.getMinutes(); 
       let day = days[d.getDay()]; 
       let month = months[d.getMonth()]
       remove(ref(db, `${uid}/todos/${selTodo}`))
       set(ref(db, `${uid}/todos/${updatedTodo}`), {
         todoText: updatedTodo, 
-        created_At: `${hour}:${d.getMinutes()}:${d.getSeconds()}s ${day} ${month} ${d.getFullYear()}`
+        created_At: `${hour}:${d.getMinutes()}:${d.getSeconds()}${hCode} ${day} ${month} ${d.getFullYear()}`
       })
       setTodoMenu(false); 
     })
@@ -112,6 +177,7 @@ const Todo = () => {
       remove(ref(db, `${uid}/todos/${removeTodo}`))
       setTodoMenu(false); 
     })
+    removeTodoAudio(); 
   }
 
   //? input event functions: 
@@ -141,19 +207,36 @@ const Todo = () => {
           }
         </div>
 
-        <div className='h-[95%] w-full bg-gradient-to-b from-indigo-200 to-blue-300 flex flex-col '>
+
+          {/* SHARED COLLECTIONS SECTION:  ----------------------------------------------------------------*/}
+
+
+        <div className='h-[95%] w-full bg-gray-800 flex flex-col '>
+          {
+            sharedMenu ? <motion.div initial={{x: '100vw', opacity: 0, display: 'none'}} animate={{x: 0, opacity: 1, display: 'flex'}} transition={{type: 'tween', duration: .2}} className='h-[100%] w-full flex-col top-19 bg-gradient-to-b from-indigo-200 to-blue-300 z-[60] absolute '>
+              <div className='createSharedCol flex'>
+                <input className='sharedColLabel w-[80%] bg-gray-800 text-white p-2' placeholder='Shared Collection Label' type='text'/>
+                <button className='text-white font-bold w-[20%] bg-blue-500 p-2' onClick={() => {writeSharedCol(); pullSharedCols()}}>Create Shared Collection</button>
+              </div>
+              <div className='sharedColsCont flex flex-col items-center mt-5'>
+                {/* shared collections will go in here! */}
+              </div>
+            </motion.div>  : <motion.div initial={{x: 0, opacity: 1, display: 'flex'}} animate={{x: '100vw', opacity: 0, display: 'none'}} transition={{type: 'tween', duration: .4}} className='h-[100%] w-full bg-gradient-to-b from-indigo-200 to-blue-300 z-[60] absolute'>
+
+</motion.div> 
+          }
           <div className='inputCont h-15% w-full flex justify-center items-center mb-2 '>
-            <input id='todoInput' className='todoInput p-2 h-[100%] w-[90%] bg-gray-800 text-white z-50 ' maxLength='140' type='text' placeholder='What Is There 2Due Today?' onKeyDown={handleEnterKey}/>
-            <button id='newTodo' className='p-2 bg-blue-700 h-[100%] w-[10%] text-white' onClick={writeTodos}>New 2Due</button>
+            <input id='todoInput' className='todoInput p-2 h-[100%] w-[85%] bg-gray-800 text-white z-50 ' maxLength='140' type='text' placeholder='What Is There 2Due Today?' onKeyDown={handleEnterKey}/>
+            <button id='newTodo' className='p-2 bg-blue-700 h-[100%] w-[15%] text-white font-bold' onClick={writeTodos}>New 2Due</button>
           </div>
           <div className='todoCont h-[100%] w-full flex flex-col gap-4 items-center overflow-y-scroll'>
             {/* todos go into here ordered by time of creation! */}
           </div>
           
         <div className='sectionNav flex gap-10 justify-center mb-5 flex-wrap'>
-            <button className='privCollections p-2 bg-blue-500 rounded-md text-white font-bold'>Private 2Dues!</button>
-            <button className='pubCollections p-2 bg-blue-500 rounded-md text-white font-bold'>Shared 2Dues!</button>
-          </div>
+            <button className='privCollections p-2 bg-blue-500 rounded-md text-white font-bold z-[60]' onClick={closeSharedCol}>Private 2Dues!</button>
+            <button className='pubCollections p-2 bg-blue-500 rounded-md text-white font-bold z-[60]' onClick={() => {openSharedCol(); pullSharedCols(); }}>Shared 2Dues!</button>
+        </div>
         </div>
         {
           todoMenu ? <motion.div initial={{y: '-100vh'}} animate={{y: 0}} className='h-screen w-full bg-gray-900 absolute z-[100] opacity-[92%] flex flex-col gap-5 justify-center items-center'>
