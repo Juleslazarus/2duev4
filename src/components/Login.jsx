@@ -15,6 +15,7 @@ const Login = ({handleLogComp, handleRegComp}) => {
 
   //? Log users in with their creds. 
   const LoginUser = (e) => {
+    e.preventDefault(); 
     let emailInput = document.querySelector('.emailInput'); 
     let passInput = document.querySelector('.passInput'); 
 

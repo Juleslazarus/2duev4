@@ -16,6 +16,7 @@ const Register = ({handleRegComp, handleLogComp}) => {
 
   //Register a user with manual inputs
   const registerUser = (e) => { 
+    e.preventDefault(); 
     let nameInput = document.querySelector('.nameInput'); 
     let emailInput = document.querySelector('.emailInput'); 
     let passInput = document.querySelector('.passInput'); 

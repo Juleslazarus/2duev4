@@ -168,6 +168,7 @@ const Todo = () => {
       })
       setTodoMenu(false); 
     })
+    sendTodoAudio(); 
   }
 
   let removeTodo = () => {
@@ -188,6 +189,13 @@ const Todo = () => {
                 let newTodo = document.getElementById('newTodo').click(); 
               }
   }
+  let handleUpdateEnterKey = (e) => {
+    let updateTodoInput = document.getElementById('updateTodoInput'); 
+              if (e.keyCode === 13) {
+                let updateTodo = document.getElementById('updateTodo').click(); 
+              }
+  }
+  
 
   //? active runtime functions: 
   pullTodos()
@@ -211,7 +219,7 @@ const Todo = () => {
           {/* SHARED COLLECTIONS SECTION:  ----------------------------------------------------------------*/}
 
 
-        <div className='h-[95%] w-full bg-gray-800 flex flex-col '>
+        <div className='h-[95%] w-full bg-gray-800 flexyeag flex-col '>
           {
             sharedMenu ? <motion.div initial={{x: '100vw', opacity: 0, display: 'none'}} animate={{x: 0, opacity: 1, display: 'flex'}} transition={{type: 'tween', duration: .2}} className='h-[100%] w-full flex-col top-19 bg-gradient-to-b from-indigo-200 to-blue-300 z-[60] absolute '>
               <div className='createSharedCol flex'>
@@ -241,9 +249,9 @@ const Todo = () => {
         {
           todoMenu ? <motion.div initial={{y: '-100vh'}} animate={{y: 0}} className='h-screen w-full bg-gray-900 absolute z-[100] opacity-[92%] flex flex-col gap-5 justify-center items-center'>
             <h1 className='text-white font-bold text-xl'>Edit 2DUE:</h1>
-            <p className='updateTodoText text-white text-4xl font-bold' contentEditable='true'>{selTodo}</p>
+            <p id='updateTodoInput' className='updateTodoText text-white text-4xl font-bold' contentEditable='true' onKeyDown={handleUpdateEnterKey}>{selTodo}</p>
             <i className="fa-solid fa-trash-can text-red-500 text-3xl hover:cursor-pointer" onClick={removeTodo}></i>
-            <i className="fa-solid fa-pen-to-square text-3xl hover:cursor-pointer text-white" onClick={updateTodo}></i>
+            <i id='updateTodo' className="fa-solid fa-pen-to-square text-3xl hover:cursor-pointer text-white" onClick={updateTodo}></i>
             <button className='text-white text-xl p-2 bg-blue-900' onClick={() => { setTodoMenu(false) }}>Close</button>
           </motion.div> : null
         }
