@@ -48,9 +48,8 @@ const Register = ({handleRegComp, handleLogComp}) => {
   let authGoogle = () => {
     signInWithPopup(auth, GoogleAuth)
     .then(result => {
+      let uid = result.user.uid; 
       auth.onAuthStateChanged(cred => {
-        let uid = cred.uid; 
-        const credential = GoogleAuthProvider.credentialFromResult(result);
         set(ref(db, `${uid}/`), {
           uid: `${uid}`
         })
