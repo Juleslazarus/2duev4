@@ -13,12 +13,13 @@ const Todo = () => {
   let [menu, setMenu] = useState(false); 
   let [menuIcon, setMenuIcon] =useState(true); 
   let [todoMenu, setTodoMenu] = useState(false); 
+  let [privMenu, setPrivMenu] = useState(true)
   let [sharedMenu, setSharedMenu] = useState(false); 
   
   // local_storage pull Section: 
   let selTodo = localStorage.getItem('selected_todo'); 
 
-  //runtime Functions: 
+  //RUNTIME Functions: 
   let pullTodos = () => {
     auth.onAuthStateChanged(cred => {
       let uid = cred.uid
@@ -51,6 +52,7 @@ const Todo = () => {
             let lsTodo = localStorage.setItem('selected_todo', `${selectedTodo}`)
             setTodoMenu(true); 
           })
+          
         }) 
       })
     })
@@ -89,6 +91,9 @@ const Todo = () => {
     })
     sendTodoAudio(); //? play the audio for sending a todo. 
   }
+
+  //? handle tab clicks: 
+  
 
   //? function for playing audio when writing a todo: 
   let sendTodoAudio = () => {
@@ -144,7 +149,7 @@ const Todo = () => {
       })
     })
   }
-
+  //? function for updating todos: 
   let updateTodo = (e) => {
     auth.onAuthStateChanged(cred => {
       let uid = cred.uid; 
@@ -170,7 +175,7 @@ const Todo = () => {
     })
     sendTodoAudio(); 
   }
-
+  //? function for removing todos: 
   let removeTodo = () => {
     auth.onAuthStateChanged(cred => {
       let uid = cred.uid
@@ -198,54 +203,14 @@ const Todo = () => {
   
 
   //? active runtime functions: 
-  pullTodos()
+  // pullTodos()
 
   //? GUI: 
   
   return (
-    <div className='mainTodoComp h-[100vh] w-full flex flex-col'>
-        <div className='headerCont w-full h-[5%] bg-blue-900 flex p-2 items-center'>
-          {menuIcon ? <i className="text-left text-white text-2xl hover:cursor-pointer fa-sharp fa-solid fa-bars absolute z-10" onClick={() => { setMenuIcon(menuIcon => !menuIcon); setMenu(menu => !menu)}}></i> : <i className=" text-white text-2xl hover:cursor-pointer fa-solid fa-xmark absolute z-10" onClick={() => { setMenuIcon( menuIcon => !menuIcon ); setMenu(menu => !menu)}}></i> }
-          {
-            menu ? <motion.div initial={{ y: '-200vh', opacity: 0}} animate={{y: 0, opacity: .8}} transition={{type: 'tween', duration: 1, type: 'spring', stiffness: 100, dampness: 10, velocity: 100, mass: 1}} className='h-[100vh] top-[0%] left-0 w-[100%] bg-gray-900 absolute opacity-[80%] 'onClick={() => { setMenu(menu => !menu); setMenuIcon(menuIcon => !menuIcon)}}>
-                <Menu/>
-            </motion.div> :  <motion.div initial={{ y: 0, opacity: 0}} animate={{y: '-200vh', opacity: .8}} transition={{type: 'tween', duration: .3, type: 'spring', stiffness: 100}} className='h-[100vh] top-[0%] w-[80%] left-0 bg-gray-900 absolute opacity-[80%] ' >
-                <Menu/>
-            </motion.div>
-          }
-        </div>
+    <div className='mainTodoComp h-[100vh] w-full bg-gray-900 flex flex-col justify-center items-center'>
 
-
-          {/* SHARED COLLECTIONS SECTION:  ----------------------------------------------------------------*/}
-
-
-        <div className='h-[95%] w-full bg-gray-800 flexyeag flex-col '>
-          {
-            sharedMenu ? <motion.div initial={{x: '100vw', opacity: 0, display: 'none'}} animate={{x: 0, opacity: 1, display: 'flex'}} transition={{type: 'tween', duration: .2}} className='h-[100%] w-full flex-col top-19 bg-gradient-to-b from-indigo-200 to-blue-300 z-[60] absolute '>
-              <div className='createSharedCol flex'>
-                <input className='sharedColLabel w-[80%] bg-gray-800 text-white p-2' placeholder='Shared Collection Label' type='text'/>
-                <button className='text-white font-bold w-[20%] bg-blue-500 p-2' onClick={() => {writeSharedCol(); pullSharedCols()}}>Create Shared Collection</button>
-              </div>
-              <div className='sharedColsCont flex flex-col items-center mt-5'>
-                {/* shared collections will go in here! */}
-              </div>
-            </motion.div>  : <motion.div initial={{x: 0, opacity: 1, display: 'flex'}} animate={{x: '100vw', opacity: 0, display: 'none'}} transition={{type: 'tween', duration: .4}} className='h-[100%] w-full bg-gradient-to-b from-indigo-200 to-blue-300 z-[60] absolute'>
-
-</motion.div> 
-          }
-          <div className='inputCont h-15% w-full flex justify-center items-center mb-2 '>
-            <input id='todoInput' className='todoInput p-2 h-[100%] w-[85%] bg-gray-800 text-white z-50 ' maxLength='140' type='text' placeholder='What Is There 2Due Today?' onKeyDown={handleEnterKey}/>
-            <button id='newTodo' className='p-2 bg-blue-700 h-[100%] w-[15%] text-white font-bold' onClick={writeTodos}>New 2Due</button>
-          </div>
-          <div className='todoCont h-[100%] w-full flex flex-col gap-4 items-center overflow-y-scroll'>
-            {/* todos go into here ordered by time of creation! */}
-          </div>
-          
-        <div className='sectionNav flex gap-10 justify-center mb-5 flex-wrap'>
-            <button className='privCollections p-2 bg-blue-500 rounded-md text-white font-bold z-[60]' onClick={closeSharedCol}>Private 2Dues!</button>
-            <button className='pubCollections p-2 bg-blue-500 rounded-md text-white font-bold z-[60]' onClick={() => {openSharedCol(); pullSharedCols(); }}>Shared 2Dues!</button>
-        </div>
-        </div>
+      {/* menu when you click on a 2Due item: */}
         {
           todoMenu ? <motion.div initial={{y: '-100vh'}} animate={{y: 0}} className='h-screen w-full bg-gray-900 absolute z-[100] opacity-[92%] flex flex-col gap-5 justify-center items-center'>
             <h1 className='text-white font-bold text-xl'>Edit 2DUE:</h1>
@@ -255,6 +220,42 @@ const Todo = () => {
             <button className='text-white text-xl p-2 bg-blue-900' onClick={() => { setTodoMenu(false) }}>Close</button>
           </motion.div> : null
         }
+
+        {/* tab switcher cont */}
+        <div className='appContainer h-[90%] w-[90%]'>
+          <div className='tabSwitcher flex h-[5%]'>
+            <button className={'text-white font-bold p-2 bg-gray-800 w-full border-2 border-blue-900 rounded-md' + (privMenu ? ' selected' : ' unselected') } onClick={() => { setPrivMenu(true); setSharedMenu(false);}}>Private 2Dues</button>
+            <button className={'text-white font-bold p-2 bg-gray-800 w-full border-2 border-blue-900 rounded-md' + (sharedMenu ? ' selected' : ' unselected')} onClick={() => { setSharedMenu(true); setPrivMenu(false);}}>Shared Collections</button>
+          </div>
+          { privMenu ? 
+            <div className='h-[95%] w-full bg-gray-800'>
+                {/* private todo menu will go here  */}
+                <div className='inputCont h-[5%]'>
+                  {/* write todos:  */}
+                  <input type='text' className='todoInput w-[90%] h-full bg-gray-800 text-white p-2;' placeholder='What Is There 2Due today? '/>
+                  <button id='newTodo' className='newTodo text-white text-center p-2 w-[10%] bg-blue-500' onClick={writeTodos}>New 2Due</button>
+                </div>
+                <div className='h-[95%] todoCont'></div>
+            </div>
+            : null 
+          }
+          { sharedMenu ? 
+            <div className='h-[95%] w-full bg-gray-800'>
+                {/* shared todo menu will go here  */}
+
+            </div>
+            : null 
+          }
+        </div>
+
+
+      {
+        sharedMenu ? 
+        <div>
+          {/* shared collections menu will go here */}
+        </div>
+        : null 
+      }
 
     </div>
   )

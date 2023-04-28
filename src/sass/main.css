@@ -39,3 +39,8 @@
 .todoInput:active {
   outline: blue;
 }
+
+.selected {
+  background: #293b55 !important;
+  transition: all .3s;
+}

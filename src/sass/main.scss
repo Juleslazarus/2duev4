@@ -46,3 +46,8 @@
         outline: blue;
     }
 }
+
+.selected {
+    background: rgb(41, 59, 85) !important; 
+    transition: all .3s; 
+}
