@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { db, auth } from './Firebase'
+import { signOut } from 'firebase/auth';
 import { get, set, ref, child, onValue, orderByChild, query, remove, update, orderByValue} from 'firebase/database'; 
 import { motion } from 'framer-motion'
 import Menu from './Menu';
 import TodoItem from './TodoItem';
 import '../sass/main.css'
 
-const Todo = () => {
+const Todo = ({handleUserAuth}) => {
   //? Logic: 
   
   // useState Section: 
@@ -200,10 +201,15 @@ const Todo = () => {
                 let updateTodo = document.getElementById('updateTodo').click(); 
               }
   }
+
+  let handleSignOut = () => {
+    signOut(auth); 
+    location.reload(); 
+  }
   
 
   //? active runtime functions: 
-  // pullTodos()
+  pullTodos()
 
   //? GUI: 
   
@@ -232,10 +238,12 @@ const Todo = () => {
                 {/* private todo menu will go here  */}
                 <div className='inputCont h-[5%]'>
                   {/* write todos:  */}
-                  <input type='text' className='todoInput w-[90%] h-full bg-gray-800 text-white p-2;' placeholder='What Is There 2Due today? '/>
-                  <button id='newTodo' className='newTodo text-white text-center p-2 w-[10%] bg-blue-500' onClick={writeTodos}>New 2Due</button>
+                  <input type='text' className='todoInput w-[85%] h-full bg-gray-800 text-white p-2;' placeholder='What Is There 2Due today?' onKeyDown={handleEnterKey}/>
+                  <button id='newTodo' className='newTodo text-white text-center p-2 w-[15%] h-full bg-blue-500' onClick={writeTodos}>New</button>
                 </div>
-                <div className='h-[95%] todoCont'></div>
+                <div className='h-[95%] todoCont flex flex-col items-center'>
+
+                </div>
             </div>
             : null 
           }
@@ -257,6 +265,8 @@ const Todo = () => {
         : null 
       }
 
+      {/* temporary sollution to a sign out button */}
+      <button className='p-2 bg-blue-500 text-white' onClick={handleSignOut}>Sign Out</button>
     </div>
   )
 }

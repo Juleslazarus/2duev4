@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { db, auth, GoogleAuth } from './Firebase'; 
-import { child, ref, set } from 'firebase/database';
+import { child, get, ref, set } from 'firebase/database';
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import '../../tailwind.css'
 
@@ -48,12 +48,19 @@ const Register = ({handleRegComp, handleLogComp}) => {
   let authGoogle = () => {
     signInWithPopup(auth, GoogleAuth)
     .then(result => {
+      let dbRef = ref(db)
       let uid = result.user.uid; 
-      auth.onAuthStateChanged(cred => {
-        set(ref(db, `${uid}/`), {
-          uid: `${uid}`
-        })
-      })
+      get(child(dbRef, `${uid}/`))
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          console.log('User Logged In'); 
+        } else {
+          console.log('Creating New User')
+          set(ref(db, `${uid}/`), {
+            uid: `${uid}`
+          })
+        }
+      }) 
     })
   }
   // GUI: 

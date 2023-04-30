@@ -19,6 +19,10 @@ const App = () => {
     }
   })
 
+  let handleUserAuth =() => {
+    setUserAuth(userAuth => !userAuth); 
+  }
+
   return (
     <div > {/* preloader:  */}
       {/* <motion.div initial={{display: 'flex'}} animate={{display: 'none'}} transition={{delay: 2.2, type: 'tween', duration: .4}} className='preloader h-[100vh] w-full z-50 bg-gray-900 flex justify-center items-center'>
@@ -28,7 +32,7 @@ const App = () => {
         <motion.h1 initial={{y: 40, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{type: 'tween', duration: .3, delay: .5, type: 'spring', stiffness: 100}} className='text-4xl text-blue-700 font-bold'>E</motion.h1>
 
       </motion.div> */}
-      {userAuth ? <Todo/> : <Landing/>} {/* handle where the user goes on page enter.  */}
+      {userAuth ? <Todo handleUserAuth={handleUserAuth}/> : <Landing/>} {/* handle where the user goes on page enter.  */}
     </div>
   )
 }
