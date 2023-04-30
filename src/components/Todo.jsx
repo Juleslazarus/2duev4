@@ -204,7 +204,6 @@ const Todo = ({handleUserAuth}) => {
 
   let handleSignOut = () => {
     signOut(auth); 
-    location.reload(); 
   }
   
 

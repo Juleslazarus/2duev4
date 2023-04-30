@@ -16,6 +16,8 @@ const App = () => {
       let uid = cred.uid; 
       // let user_uid = localStorage.setItem('user_uid', JSON.stringify(`${uid}`))
       setUserAuth(true); 
+    } else {
+      setUserAuth(false); 
     }
   })
 
