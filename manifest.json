@@ -1,7 +1,7 @@
 {
     "name": "2Due v4 pwa app", 
     "short_name": "2Due", 
-    "start_url": "index.html", 
+    "start_url": "./index.html", 
     "icons": [
         {
             "src": "/public/2due-splash.png", 
