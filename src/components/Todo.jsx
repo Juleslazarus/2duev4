@@ -33,7 +33,7 @@ const Todo = ({handleUserAuth}) => {
           let todoDiv = document.createElement('div'); 
           let todoItem = document.createElement('h1'); 
           todoItem.classList.add('todoItem'); 
-          todoItem.classList.add('bg-slate-700')
+          todoItem.classList.add('bg-sky-950')
           todoItem.classList.add('shadow-xl')
           todoItem.classList.add('shadow-slate-900')
           todoItem.classList.add('text-white')
