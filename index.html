@@ -6,9 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2Due</title>
     <script src="https://kit.fontawesome.com/a3fa4c138f.js" crossorigin="anonymous"></script> <!--? font awesome  -->
+    <link rel="manifest" href="manifest.json">
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('ServiceWorker.js')
+          .then(function(registration) {
+            console.log('serviceWorker registration successful with scope: ', registration.scope); 
+
+          }, function(err) {
+            console.log('serviceWorker registration failed: ', err)
+          })
+        })
+      }
+    </script>
   </body>
 </html>
