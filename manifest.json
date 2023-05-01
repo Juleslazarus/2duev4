@@ -4,8 +4,8 @@
     "start_url": "index.html", 
     "icons": [
         {
-            "src": "/2due-splash.png", 
-            "sizes": "192x192", 
+            "src": "/public/2due-splash.png", 
+            "sizes": "512x512", 
             "type": "image/png"
         }
     ], 
