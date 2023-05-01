@@ -33,12 +33,12 @@ const Todo = ({handleUserAuth}) => {
           let todoDiv = document.createElement('div'); 
           let todoItem = document.createElement('h1'); 
           todoItem.classList.add('todoItem'); 
-          todoItem.classList.add('bg-blue-400')
+          todoItem.classList.add('bg-slate-700')
           todoItem.classList.add('shadow-xl')
-          todoItem.classList.add('shadow-blye-900')
+          todoItem.classList.add('shadow-slate-900')
           todoItem.classList.add('text-white')
           todoItem.classList.add('hover:cursor-pointer')
-          todoItem.classList.add('rounded-xl')
+          todoItem.classList.add('rounded-sm')
           todoItem.classList.add('z-30'); 
           todoItem.textContent = todoText; 
           let timeStamp = document.createElement('h1'); 
@@ -85,12 +85,12 @@ const Todo = ({handleUserAuth}) => {
       } else {
         set(ref(db, `${uid}/todos/${todoInputText}`), {
           todoText: todoInputText, 
-          created_At: `${hour}:${d.getMinutes()}:${d.getSeconds()}${hCode} ${day} ${month} ${d.getFullYear()}`
+          created_At: `${hour}:${d.getMinutes()}:${d.getSeconds()}${hCode} ${day} ${d.getDay()} ${month} ${d.getFullYear()}`
         })
         todoInput.value = ''; 
+        sendTodoAudio(); //? play the audio for sending a todo. 
       }
     })
-    sendTodoAudio(); //? play the audio for sending a todo. 
   }
 
   //? handle tab clicks: 
@@ -170,7 +170,7 @@ const Todo = ({handleUserAuth}) => {
       remove(ref(db, `${uid}/todos/${selTodo}`))
       set(ref(db, `${uid}/todos/${updatedTodo}`), {
         todoText: updatedTodo, 
-        created_At: `${hour}:${d.getMinutes()}:${d.getSeconds()}${hCode} ${day} ${month} ${d.getFullYear()}`
+        created_At: `${hour}:${d.getMinutes()}:${d.getSeconds()}${hCode} ${day} ${d.getDay()} ${month} ${d.getFullYear()}`
       })
       setTodoMenu(false); 
     })
@@ -227,17 +227,17 @@ const Todo = ({handleUserAuth}) => {
         }
 
         {/* tab switcher cont */}
-        <div className='appContainer h-[90%] w-[90%]'>
+        <div className='appContainer h-full w-full '>
           <div className='tabSwitcher flex h-[5%]'>
-            <button className={'text-white font-bold p-2 bg-gray-800 w-full border-2 border-blue-900 rounded-md' + (privMenu ? ' selected' : ' unselected') } onClick={() => { setPrivMenu(true); setSharedMenu(false);}}>Private 2Dues</button>
-            <button className={'text-white font-bold p-2 bg-gray-800 w-full border-2 border-blue-900 rounded-md' + (sharedMenu ? ' selected' : ' unselected')} onClick={() => { setSharedMenu(true); setPrivMenu(false);}}>Shared Collections</button>
+            <button className={'text-white font-bold p-2 bg-gray-800 w-full border-2 border-blue-900 rounded-tl-md' + (privMenu ? ' selected' : ' unselected') } onClick={() => { setPrivMenu(true); setSharedMenu(false);}}>Private 2Dues</button>
+            <button className={'text-white font-bold p-2 bg-gray-800 w-full border-2 border-blue-900 rounded-tr-md' + (sharedMenu ? ' selected' : ' unselected')} onClick={() => { setSharedMenu(true); setPrivMenu(false);}}>Shared Collections</button>
           </div>
           { privMenu ? 
             <div className='h-[95%] w-full bg-gray-800'>
                 {/* private todo menu will go here  */}
                 <div className='inputCont h-[5%]'>
                   {/* write todos:  */}
-                  <input type='text' className='todoInput w-[85%] h-full bg-gray-800 text-white p-2;' placeholder='What Is There 2Due today?' onKeyDown={handleEnterKey}/>
+                  <input type='text' className='todoInput w-[85%] h-full bg-gray-800 text-white p-4;' maxLength='140' minLength='1' placeholder='What Is There 2Due today?' onKeyDown={handleEnterKey}/>
                   <button id='newTodo' className='newTodo text-white text-center p-2 w-[15%] h-full bg-blue-500' onClick={writeTodos}>New</button>
                 </div>
                 <div className='h-[95%] todoCont flex flex-col items-center'>
